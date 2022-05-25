@@ -8,10 +8,10 @@ class Officer{
   String? email;
   String? password;
   bool? isAdmin;
-  bool? accepted;
   bool? isBlocked;
+  bool? isAccepted;
 
-  Officer.named({
+  Officer({
     this.id = 0,
     this.fullName,
     this.isBlocked,
@@ -19,7 +19,7 @@ class Officer{
     this.address,
     this.nationalId,
     this.email,
-    this.accepted,
+    this.isAccepted,
     this.isAdmin,
   });
 
@@ -30,7 +30,7 @@ class Officer{
     fullName = map['fullName'];
     address = map['address'];
     isBlocked = map['isBlocked'];
-    accepted = map['accepted'];
+    isAccepted = map['accepted'];
     isAdmin = map['isAdmin'];
     email = map['email'];
     password = map['password'];
@@ -57,7 +57,7 @@ class Officer{
     nationalId =  officerMap['nationalId'];
     address =   officerMap['address'];
     isAdmin = officerMap['isAdmin'];
-    accepted = officerMap['accepted'];
+    isAccepted = officerMap['accepted'];
   }
 
   String toJsonBody(){
@@ -67,7 +67,7 @@ class Officer{
       'isBlocked' : isBlocked,
       'email' : email,
       'fullName':fullName,
-      'accepted' :accepted,
+      'isAccepted' :isAccepted,
       'isAdmin' : isAdmin,
       'password' : password,
       'nationalId' : nationalId,

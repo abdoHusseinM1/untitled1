@@ -4,7 +4,6 @@ import 'package:untitled/models/student.dart';
 import 'package:untitled/shared/components/constants.dart';
 
 class StudentAPI {
-
   //methods
   // Await the http get response, then decode the json-formatted response.
 
@@ -40,14 +39,13 @@ class StudentAPI {
     );
   }
 
-
   //TODO edit from the API project make the post => put
   static Future<http.Response> editStudent(Student newStudent) async {
     return await http.put(
       Uri.parse('${getBaseUrl()}${getStudentUrl()}'),
       headers: getHeaders(),
-      body:newStudent.toMap(),
-      );
+      body: newStudent.toMap(),
+    );
   }
 
   //Delete Student
@@ -56,7 +54,7 @@ class StudentAPI {
 
     return await http.delete(
       Uri.parse(url),
-      headers:getHeaders(),
+      headers: getHeaders(),
     );
   }
 
@@ -66,17 +64,22 @@ class StudentAPI {
 
     return await http.put(
       Uri.parse(url),
-      headers:getHeaders(),
+      headers: getHeaders(),
     );
   }
 
   //accept student
-  static Future<http.Response> acceptStudent(int id) async {
+  static Future<http.Response> acceptStudent(int? id) async {
     String url = '${getStudentUrl()}${getAcceptStudentUrl()}$id';
 
     return await http.put(
       Uri.parse(url),
       headers: getHeaders(),
     );
+  }
+
+  static Future<http.Response> getRegistrationRequests() async {
+    String url = '${getBaseUrl()}${getStudentUrl()}get-requests/';
+    return http.get(Uri.parse(url), headers: getHeaders());
   }
 }

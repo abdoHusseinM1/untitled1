@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/models/student.dart';
+import 'package:untitled/shared/components/components.dart';
+import 'package:untitled/shared/network/remote/student_api.dart';
 import 'package:untitled/shared/styles/colors.dart';
 
 class RegistrationRequestsScreen extends StatefulWidget {
@@ -12,200 +14,221 @@ class RegistrationRequestsScreen extends StatefulWidget {
 
 class _RegistrationRequestsScreenState
     extends State<RegistrationRequestsScreen> {
+  var dataState = 'Loading';
+  List<Student> students = [];
+  List<bool> disabledButtons = [];
 
-  List<Student> students = [
-    Student(
-        fullName: "Abdulrahman",
-        password: "lkasdjnkls",
-        email: "lkjdnlkjd",
-        nationalId: "ldfkfl;d",
-        address: "adasdaa",
-        isBlocked: false,
-        isAccepted: false,
-        phone: "548964788"),
-    Student(
-        fullName: "Abdulrahman",
-        password: "lkasdjnkls",
-        email: "lkjdnlkjd",
-        nationalId: "ldfkfl;d",
-        address: "adasdaa",
-        isBlocked: false,
-        isAccepted: false,
-        phone: "548964788"),
-  ];
+  getData() {
+    StudentAPI.getRegistrationRequests().then((value) {
+      students = Student.getAllStudentsFromJson(value.body);
+      setState(() {
+        if (students.isEmpty) {
+          dataState = 'empty';
+        }else {
+          for (int i = 0; i < students.length; i++) {
+            disabledButtons.add(false);
+          }
+        }
+        print(value.statusCode);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView.separated(
-                itemBuilder: (context, index) =>
-                    buildStudentRegistrationItem(students[index], index + 1),
-                separatorBuilder: (context, index) => const SizedBox(
-                      height: 15.0,
-                    ),
-                itemCount: students.length)));
+            child: students.isEmpty
+                ? Center(
+                    child: Text(dataState),
+                  )
+                : ListView.separated(
+                    itemBuilder: (context, index) =>
+                        buildStudentRegistrationItem(
+                            students[index],
+                            index + 1,
+                            disabledButtons.isNotEmpty
+                                ? disabledButtons[index]
+                                : false),
+                    separatorBuilder: (context, index) => const SizedBox(
+                          height: 15.0,
+                        ),
+                    itemCount: students.length)));
   }
-}
 
-Widget buildStudentRegistrationItem(Student student, int? index) => Expanded(
-      child: Row(children: [
-        Container(
-          alignment: Alignment.center,
-          decoration:const BoxDecoration(
-            color: Colors.transparent,
-          ),
-          child: Text(
-            '$index',
-            style: const TextStyle(fontSize: 20.0),
-          ),
-        ),
-        const SizedBox(
-          width: 5.0,
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-            child: Column(
-              children: [
-                const Text('Student Name',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Text('${student.fullName}',
-                    style: TextStyle(
-                      color: getLightColor(),
-                      fontSize: 20.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis)
-              ],
+  _acceptStudent(Student student, index) {
+    //StudentAPI.acceptStudent(student.id);
+    if(disabledButtons.isNotEmpty){
+      disabledButtons[index]== true;
+    }
+  }
+
+  _removeStudent(Student student, index) {
+    //StudentAPI.acceptStudent(student.id);
+    if(disabledButtons.isNotEmpty){
+      disabledButtons[index]== true;
+    }
+  }
+
+  Widget buildStudentRegistrationItem(
+          Student student, int? index, bool disabledButton) =>
+      Expanded(
+        child: Row(children: [
+          Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+            ),
+            child: Text(
+              '$index',
+              style: const TextStyle(fontSize: 20.0),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 5.0,
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-            child: Column(
-              children: [
-                const Text(
-                  'Phone',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
+          const SizedBox(
+            width: 5.0,
+          ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  const Text('Student Name',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                  const SizedBox(
+                    height: 5.0,
                   ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Text('${student.phone}',
-                    style: TextStyle(
-                      color: getLightColor(),
-                      fontSize: 20.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis)
-              ],
+                  Text('${student.fullName}',
+                      style: TextStyle(
+                        color: getLightColor(),
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 5.0,
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-            child: Column(
-              children: [
-                const Text(
-                  'Email',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Text('${student.email}',
-                    style: TextStyle(
-                      color: getLightColor(),
-                      fontSize: 20.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis)
-              ],
-            ),
+          const SizedBox(
+            width: 5.0,
           ),
-        ),
-        const SizedBox(
-          width: 5.0,
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-            child: Column(
-              children: [
-                Text('National Id',
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  Text(
+                    'Phone',
                     style: TextStyle(
                       color: getDarkColor(),
                       fontSize: 20.0,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Text('${student.nationalId}',
-                    style: TextStyle(
-                      color:getLightColor(),
-                      fontSize: 20.0,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis)
-              ],
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Text('${student.phone}',
+                      style: TextStyle(
+                        color: getLightColor(),
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 5.0,
-        ),
-        Column(
-          children: [
-            Container(
-                height: 30,
-                width: 70.0,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: getLightColor()),
-                child: TextButton(
-                    onPressed: () {},
-                    child:const Text(
-                      'Accept',
-                      style: TextStyle(color: Colors.white),
-                    ))),
-            const SizedBox(height: 5.0),
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.red[500]),
-                child: TextButton(
-                    onPressed: () {},
-                    child:const Text(
-                      'Remove',
-                      style: TextStyle(color: Colors.white),
-                    ))),
-          ],
-        ),
-      ]),
-    );
+          const SizedBox(
+            width: 5.0,
+          ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  Text(
+                    'Email',
+                    style: TextStyle(
+                      color: getDarkColor(),
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Text('${student.email}',
+                      style: TextStyle(
+                        color: getLightColor(),
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 5.0,
+          ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  Text('National Id',
+                      style: TextStyle(
+                        color: getDarkColor(),
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Text('${student.nationalId}',
+                      style: TextStyle(
+                        color: getLightColor(),
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 5.0,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              getSmallButton(
+                  text: 'Accept',
+                  onPressed: _acceptStudent(student, index),
+                  textColor: Colors.white,
+                  context: context),
+              const SizedBox(height: 5.0),
+              getSmallButton(
+                  text: 'Remove',
+                  onPressed: _removeStudent(student, index),
+                  textColor: Colors.white,
+                  context: context,
+                  disabled: disabledButton,
+                  color: Colors.red)
+            ],
+          ),
+        ]),
+      );
+}

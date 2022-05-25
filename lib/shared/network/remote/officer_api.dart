@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:untitled/models/login_officer.dart';
 import 'package:untitled/models/officer.dart';
 import 'package:untitled/shared/components/constants.dart';
 
@@ -23,6 +26,16 @@ class OfficerAPI {
   static Future<http.Response> getAllOfficers() async {
     String url = '${getBaseUrl()}${getOfficerUrl()}';
     return http.get(Uri.parse(url), headers: getHeaders());
+  }
+
+  static Future<http.Response> loginOfficer(LoginOfficer officer) async {
+    String url = '${getBaseUrl()}${getLoginOfficerUrl()}';
+
+    return await http.post(
+      Uri.parse(url),
+      headers: getHeaders(),
+      body: officer.toJsonBody(),
+    );
   }
 
   // accept officer
@@ -53,8 +66,8 @@ class OfficerAPI {
   }
 
   // get length
-  static Future<http.Response> getLength() async{
+  static Future<http.Response> getLength() async {
     String url = '${getBaseUrl()}${getOfficerUrl()}get-length';
-    return await http.get(Uri.parse(url),headers: getHeaders());
+    return await http.get(Uri.parse(url), headers: getHeaders());
   }
 }

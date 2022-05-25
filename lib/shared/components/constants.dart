@@ -1,6 +1,7 @@
-String getBaseUrl() => 'https://librarymanageapi2.azurewebsites.net/';
+//String getBaseUrl() => 'https://librarymanageapi2.azurewebsites.net/';
+String getBaseUrl() => 'https://libraryapiapp.azurewebsites.net/';
 
-String getTestBaseUrl() => 'https://localhost:5001/';
+//String getBaseUrl() => 'https://localhost:5001/';
 
 Map<String, String> getHeaders() => {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -28,6 +29,7 @@ String getAuthorUrl() => 'api/Author/';
 String getOfficerUrl() => 'api/Officer/';
 
 String getRequestUrl() => 'api/request/';
+String getLoginOfficerUrl()=>'api/login/login-officer/';
 
 String getFormattedDate(DateTime? dateTime) =>
     '${dateTime!.year} / ${dateTime.month} / ${dateTime.day}';

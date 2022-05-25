@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/models/login_officer.dart';
+import 'package:untitled/models/officer.dart';
+import 'package:untitled/modules/home_screen/home_screen.dart';
 import 'package:untitled/shared/components/components.dart';
+import 'package:untitled/shared/instances/current_user_info.dart';
+import 'package:untitled/shared/network/remote/officer_api.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -36,7 +41,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const SizedBox(height: 200,),
+                        const SizedBox(
+                          height: 200,
+                        ),
                         getHeadlineText(text: 'Login'),
                         const SizedBox(
                           height: 10,
@@ -55,15 +62,15 @@ class _SignInScreenState extends State<SignInScreen> {
                           height: 10,
                         ),
                         getDefaultFormField(
-                            controller: passwordController,
-                            type: TextInputType.text,
-                            hint: 'Password',
-                            validate: (value) {
-                              if(value!.length < 8){
-                                return 'Invalid Password';
-                              }
-                              return null;
-                            },
+                          controller: passwordController,
+                          type: TextInputType.text,
+                          hint: 'Password',
+                          validate: (value) {
+                            if (value!.length < 8) {
+                              return 'Invalid Password';
+                            }
+                            return null;
+                          },
                           isPassword: true,
                         ),
                         const SizedBox(
@@ -75,8 +82,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: getDefaultButton(text: 'Cancel', function: (){
-                                Navigator.pop(context);
+                              child: getDefaultButton(
+                                text: 'Cancel',
+                                function: () {
+                                  Navigator.pop(context);
                                 },
                                 background: Colors.white,
                                 textColor: Colors.indigo,
@@ -86,10 +95,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               width: 10,
                             ),
                             Expanded(
-                              child: getDefaultButton(text: 'Login', function: (){
-                                _login();
-                              })
-                            ),
+                                child: getDefaultButton(
+                                    text: 'Login',
+                                    function: () {
+                                      _login();
+                                    })),
                           ],
                         ),
                         Row(
@@ -114,10 +124,22 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
-  _login(){
-    if(formKey.currentState!.validate()){
-      print('valid data');
-    }
 
+  _login() async {
+    if (formKey.currentState!.validate()) {
+      LoginOfficer officer = LoginOfficer(
+          password: passwordController.text, email: emailController.text);
+
+      await OfficerAPI.loginOfficer(officer).then((value) {
+        if (value.statusCode == 200) {
+          currentOfficer = Officer.getAuthorFromJson(value.body);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
+        }else {
+          SnackBar snackBar = SnackBar(content: Text(value.body));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      });
+    }
   }
 }

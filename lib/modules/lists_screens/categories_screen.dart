@@ -16,24 +16,26 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  List<Category> categories = [];
+  List<Category> categories = [
+    Category.named(categoryName: "Category 1" , id: 1),
+    Category.named(categoryName: "Category 2" , id: 2),
+    Category.named(categoryName: "Category 3" , id: 3),
+    Category.named(categoryName: "Category 4" , id: 4),
+    Category.named(categoryName: "Category 5" , id: 5),
+  ];
   String replacedText = 'empty';
   int steps = 0;
 
-  getData() {
+  void getData() {
     CategoryAPI.getAllCategories().then((value) {
       if (value.statusCode == 200) {
         setState(() {
           categories = Category.getAllCategoriesFromJson(value.body);
         });
       }
+      print(value.body);
+      print(value.statusCode);
     });
-  }
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
   }
 
   @override

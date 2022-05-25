@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:untitled/models/book_model.dart';
+import 'package:untitled/models/post_book_model.dart';
 import 'package:untitled/shared/components/constants.dart';
 
 class BookAPI{
@@ -27,12 +30,12 @@ class BookAPI{
   }
 
   //add book
-  static Future<http.Response> addBook(Book b) async {
+  static Future<http.Response> addBook(PostBook b) async {
 
     return await http.post(
       Uri.parse('${getBaseUrl()}${getBookUrl()}'),
       headers: getHeaders(),
-      body: b.toJsonBody(),
+      body: jsonEncode(b.toJson()),
     );
   }
 

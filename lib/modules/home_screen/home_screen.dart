@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/models/author.dart';
+import 'package:untitled/models/sub_category.dart';
+import 'package:untitled/modules/lists_screens/books_screen.dart';
 import 'package:untitled/modules/lists_screens/categories_screen.dart';
 import 'package:untitled/modules/lists_screens/registration_requests_screen.dart';
-import 'package:untitled/models/student.dart';
 import 'package:untitled/modules/home_screen/dashboard_screen.dart';
+import 'package:untitled/modules/lists_screens/request_list.dart';
 import 'package:untitled/shared/components/components.dart';
-import 'package:untitled/shared/network/remote/student_api.dart';
+import 'package:untitled/shared/instances/current_user_info.dart';
+import 'package:untitled/shared/network/remote/author_api.dart';
+import 'package:untitled/shared/network/remote/sub_category_api.dart';
 import 'package:untitled/shared/styles/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,12 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   var screens = [
     const DashboardScreen(),
-    Center(
-      child: Text(screensNames[1]),
-    ),
-    Center(
-      child: Text(screensNames[2]),
-    ),
+    const RequestsListScreen(),
+    const BooksScreen(),
     Center(
       child: Text(screensNames[3]),
     ),
@@ -43,15 +44,27 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-
+  _getData() async {
+    await SubCategoryAPI.getAllSubCategories().then((value) {
+      if (value.statusCode == 200) {
+        allSubCategories = SubCategory.getAllSubCategoriesFromJson(value.body);
+      }
+    });
+    await AuthorAPI.getAllAuthors().then((value) {
+      if(value.statusCode == 200){
+        authors = Author.getAllAuthorsFromJson(value.body);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
+    _getData();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          '${screensNames[selectedIndex]}',
+          screensNames[selectedIndex],
           style:const  TextStyle(
             color: Colors.white,
             fontSize: 30,
@@ -72,14 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
-
                     //name
                     Text(
-                      'Abdulrahman Hussein',
-                      style: TextStyle(
+                      '${currentOfficer!.fullName}',
+                      style:const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -89,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // rule
                     Text(
-                      'Admin',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                      currentOfficer!.isAdmin! ? 'admin': 'liberian',
+                      style:const TextStyle(color: Colors.white70, fontSize: 16),
                     )
                   ],
                 ),

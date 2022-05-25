@@ -13,14 +13,14 @@ class Student {
 
   Student.withId({
     required this.id,
-    required this.email,
-    required this.password,
-    required this.address,
-    required this.nationalId,
-    required this.phone,
-    required this.fullName,
-    required this.isAccepted,
-    required this.isBlocked,
+    this.email,
+    this.password,
+    this.address,
+    this.nationalId,
+    this.phone,
+    this.fullName,
+    this.isAccepted,
+    this.isBlocked,
   });
 
   Student.empty();
@@ -79,12 +79,11 @@ class Student {
       'id':id,
       'fullName': fullName,
       'address': address,
-      'phone': phone,
       'nationalId': nationalId,
       'password': password,
       'email': email,
       'isAccepted': isAccepted,
-      'isBlocked' : isBlocked
+      'isBlocked' : isBlocked,
     });
   }
 }

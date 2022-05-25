@@ -9,17 +9,17 @@ class Author{
   Author.empty();
 
   Author.fromMap(dynamic map){
-    id = map['id'];
+    id = map['authorId'];
     authorName = map['authorName'];
   }
 
   static List<Author> getAllAuthorsFromJson(String body) {
     List<dynamic> jsonList = jsonDecode(body);
-    List<Author> subCategories = [];
+    List<Author> authors = [];
     for(int i =0; i<jsonList.length; i++){
-      subCategories.add(Author.fromMap(jsonList[i]));
+      authors.add(Author.fromMap(jsonList[i]));
     }
-    return subCategories;
+    return authors;
   }
 
 

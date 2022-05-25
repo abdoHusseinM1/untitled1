@@ -156,7 +156,6 @@ Widget getOriginalButton({
   bool disabled = false ,
 })=> SizedBox(
   width: MediaQuery.of(context).size.width*0.2,
-
   height: MediaQuery.of(context).size.height*0.09,
   child:MaterialButton (
     onPressed: disabled ? (){} : onPressed ,
@@ -174,17 +173,48 @@ Widget getOriginalButton({
   ),
 );
 
+Widget getSmallButton({
+  required text,
+  required onPressed,
+  color = Colors.blue,
+  double width = 60,
+  double height = 20,
+  double fontSize = 10,
+  required textColor,
+  required BuildContext context,
+  bool disabled = false,
+})=> SizedBox(
+  width: width,
+  height: height,
+  child:MaterialButton (
+    onPressed: disabled ? (){} : onPressed ,
+    child: Text(
+      text,
+      style: TextStyle(
+          color: textColor,
+          fontSize: fontSize,
+      ),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    color: disabled ? Colors.grey : color,
+  ),
+);
+
+
 Widget getListItemPart({
   backgroundColor = Colors.white,
   required String? text1,
   required String? text2,
-
 }){
   return Expanded(
     child: Container(
+      height: 100,
       decoration: BoxDecoration(color: backgroundColor),
       padding:const EdgeInsets.symmetric(vertical: 10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('$text1',
               style: TextStyle(
@@ -202,9 +232,105 @@ Widget getListItemPart({
                 fontSize: 20.0,
               ),
               maxLines: 1,
-              overflow: TextOverflow.ellipsis)
+              overflow: TextOverflow.ellipsis),
         ],
       ),
     ),
+  );
+}
+
+Widget getEditRow({
+  required text,
+  text2 = "",
+  required TextEditingController controller,
+  bool isNumbers = false,
+  required String validateText,
+}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Expanded(
+          flex: 1,
+          child: Text(
+            text,
+            style: TextStyle(color: getDarkColor()),
+            textAlign: TextAlign.center,
+          )),
+      Expanded(
+          flex: 2,
+          child: TextFormField(
+            keyboardType: isNumbers? TextInputType.number : null ,
+            controller: controller,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white
+                )
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+            validator: (value){
+              if(value!.isEmpty){
+                return validateText;
+              }
+            },
+          ),
+      ),
+      Expanded(
+        child: Text(
+          '$text2' ,
+        ),
+        flex: 1,
+      ),
+    ],
+  );
+}
+
+Widget getDialogForm({
+  required String? text1 ,
+  required String? text2,
+  String text3 = '',
+  bool withButton = false,
+  String buttonText = '',
+  required onPressed,
+}){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Expanded(
+        child: Text(
+          '$text1',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: getDarkColor(),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$text2',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(width: 10,),
+            !withButton ?const Text('') : TextButton(
+                onPressed: onPressed,
+                child: const Text('change')),
+          ],
+        ),
+        flex: 2,
+      ),
+      const SizedBox(width: 10,),
+      Expanded(
+        child: Text(
+          text3,
+        ),
+        flex: 1,
+      ),
+    ],
   );
 }
