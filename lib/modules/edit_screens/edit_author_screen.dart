@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/models/author.dart';
-import 'package:untitled/modules/home_screen/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/notifiers/edit_author_notifier.dart';
 import 'package:untitled/shared/components/components.dart';
-import 'package:untitled/shared/network/remote/author_api.dart';
 
-class AddAuthorScreen extends StatefulWidget {
-  const AddAuthorScreen({Key? key}) : super(key: key);
+class EditAuthorScreen extends StatefulWidget {
+  const EditAuthorScreen(
+      {Key? key, required this.authorName, required this.authorId})
+      : super(key: key);
+  final String authorName;
+  final int authorId;
 
   @override
-  State<AddAuthorScreen> createState() => _AddAuthorScreenState();
+  State<EditAuthorScreen> createState() => _EditAuthorScreenState();
 }
 
-class _AddAuthorScreenState extends State<AddAuthorScreen> {
+class _EditAuthorScreenState extends State<EditAuthorScreen> {
   TextEditingController textFieldController = TextEditingController();
   GlobalKey saveButtonKey = GlobalKey();
-  bool buttonDisabled = false;
+
 
   @override
   Widget build(BuildContext context) {
+
+    EditAuthorNotifier notifier = Provider.of<EditAuthorNotifier>(context);
+    notifier.authorName = widget.authorName;
+    notifier.authorId = widget.authorId;
+    textFieldController.text = widget.authorName;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Add Author'),
+        title: const Text('Edit Author'),
       ),
       body: Center(
         child: Padding(
@@ -57,9 +66,11 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                       context: context,
                       textColor: Colors.white,
                       text: 'Save',
-                      onPressed: _addAuthor,
-                      disabled: buttonDisabled,
-                      color: buttonDisabled ? Colors.grey : Colors.blue,
+                      onPressed: (){
+                        editAuthor(notifier , context);
+                      },
+                      disabled: notifier.buttonDisabled,
+                      color: notifier.buttonDisabled ? Colors.grey : Colors.blue,
                     ),
                   ],
                 )
@@ -69,16 +80,10 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
     );
   }
 
-  void _addAuthor() {
+  void editAuthor(EditAuthorNotifier notifier , BuildContext context) {
+    notifier.authorName = textFieldController.text;
     if (textFieldController.text.isNotEmpty) {
-      setState(() {
-        buttonDisabled = true;
-        PostAuthor author =
-            PostAuthor.named(authorName: textFieldController.text, authorId: 0);
-        AuthorAPI.addAuthor(author).then((value) {
-          Navigator.pop(context);
-        });
-      });
+      notifier.editAuthor(context);
     }
   }
 }

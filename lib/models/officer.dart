@@ -50,7 +50,7 @@ class Officer{
   Officer.getAuthorFromJson(String body) {
     Map<String, dynamic> officerMap = jsonDecode(body);
     id = officerMap['id'];
-    fullName = officerMap['address'];
+    fullName = officerMap['fullName'];
     password = officerMap['password'];
     isBlocked = officerMap['isBlocked'];
     email = officerMap['email'];

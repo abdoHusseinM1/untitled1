@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/models/author.dart';
-import 'package:untitled/models/sub_category.dart';
+import 'package:untitled/modules/lists_screens/authors_list.dart';
 import 'package:untitled/modules/lists_screens/books_screen.dart';
 import 'package:untitled/modules/lists_screens/categories_screen.dart';
-import 'package:untitled/modules/lists_screens/registration_requests_screen.dart';
 import 'package:untitled/modules/home_screen/dashboard_screen.dart';
+import 'package:untitled/modules/lists_screens/registration_requests_screen2.dart';
 import 'package:untitled/modules/lists_screens/request_list.dart';
+import 'package:untitled/modules/lists_screens/students_list.dart';
 import 'package:untitled/shared/components/components.dart';
 import 'package:untitled/shared/instances/current_user_info.dart';
-import 'package:untitled/shared/network/remote/author_api.dart';
-import 'package:untitled/shared/network/remote/sub_category_api.dart';
 import 'package:untitled/shared/styles/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,32 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
     const DashboardScreen(),
     const RequestsListScreen(),
     const BooksScreen(),
-    Center(
-      child: Text(screensNames[3]),
-    ),
-    const RegistrationRequestsScreen(),
+    const AuthorsListScreen(),
+    const RegistrationRequestsListScreen2(),
     const CategoriesScreen(),
-    Center(
-      child: Text(screensNames[6]),
-    ),
+    const StudentsScreen(),
   ];
 
-  _getData() async {
-    await SubCategoryAPI.getAllSubCategories().then((value) {
-      if (value.statusCode == 200) {
-        allSubCategories = SubCategory.getAllSubCategoriesFromJson(value.body);
-      }
-    });
-    await AuthorAPI.getAllAuthors().then((value) {
-      if(value.statusCode == 200){
-        authors = Author.getAllAuthorsFromJson(value.body);
-      }
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
 
-    _getData();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 class SubCategory{
-  int? id;
+  int? subCategoryId;
   String? name;
-  int? mainCategoryId;
+  int? categoryId;
 
   SubCategory.named({
-    this.id = 0,
+    this.subCategoryId = 0,
     this.name,
-    this.mainCategoryId,
+    this.categoryId,
 });
 
   SubCategory.empty();
 
   SubCategory.fromMap(dynamic map){
-    id = map['id'];
+    subCategoryId = map['subCategoryId'];
     name = map['name'];
-    mainCategoryId = map['mainCategoryId'];
+    categoryId = map['categoryId'];
   }
 
   static List<SubCategory> getAllSubCategoriesFromJson(String body) {
@@ -32,17 +32,17 @@ class SubCategory{
   static SubCategory getBookFromJson(String body) {
     Map<String, dynamic> subCategoryMap = jsonDecode(body);
     SubCategory subCategory = SubCategory.named(
-      id : subCategoryMap['id'],
+      subCategoryId : subCategoryMap['subCategoryId'],
       name: subCategoryMap['name'],
-      mainCategoryId: subCategoryMap['mainCategoryId'],
+      categoryId: subCategoryMap['categoryId'],
     );
     return subCategory;
   }
 
   String toJsonBody(){
     return jsonEncode(<String, dynamic>{
-      'id':id,
-      'mainCategoryId':mainCategoryId,
+      'subCategoryId':subCategoryId,
+      'categoryId':categoryId,
       'name':name,
     });
   }

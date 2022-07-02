@@ -154,8 +154,9 @@ Widget getOriginalButton({
   required textColor,
   required BuildContext context,
   bool disabled = false ,
+  width = .2,
 })=> SizedBox(
-  width: MediaQuery.of(context).size.width*0.2,
+  width: MediaQuery.of(context).size.width*width,
   height: MediaQuery.of(context).size.height*0.09,
   child:MaterialButton (
     onPressed: disabled ? (){} : onPressed ,
@@ -168,6 +169,35 @@ Widget getOriginalButton({
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25),
+    ),
+    color: disabled? Colors.grey : color,
+  ),
+);
+
+Widget getSmallOriginalButton({
+  required text,
+  required onPressed,
+  color = Colors.blue,
+  textColor = Colors.white,
+  double fontSize = 14,
+  required BuildContext context,
+  bool disabled = false,
+  // double width = 100,
+  double height = 40,
+})=> SizedBox(
+  // width: width,
+  height: height,
+  child:MaterialButton (
+    onPressed: disabled ? (){} : onPressed ,
+    child: Text(
+      text,
+      style: TextStyle(
+          color: textColor,
+          fontSize: fontSize
+      ),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
     ),
     color: disabled? Colors.grey : color,
   ),
@@ -187,7 +217,9 @@ Widget getSmallButton({
   width: width,
   height: height,
   child:MaterialButton (
-    onPressed: disabled ? (){} : onPressed ,
+    onPressed: disabled ? (){} : (){
+      onPressed;
+    } ,
     child: Text(
       text,
       style: TextStyle(
@@ -288,6 +320,28 @@ Widget getEditRow({
   );
 }
 
+Widget getDetailRow({
+  required String text1,
+  required String text2,
+})=>Row(
+  children: [
+    Text(
+      text1,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: getDarkColor(),
+      ),
+    ),
+    Text(
+      text2,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: getLightColor(),
+      ),
+    ),
+  ],
+);
+
 Widget getDialogForm({
   required String? text1 ,
   required String? text2,
@@ -333,4 +387,6 @@ Widget getDialogForm({
       ),
     ],
   );
+
+
 }

@@ -1,23 +1,23 @@
 import 'dart:convert';
 
 class Book {
-  int? bookId;
-  int? subCategoryId;
+  int bookId = 0;
+  String? subCategoryName;
   String? title;
   int? availableQuantity;
   int? publishedYear;
   List<dynamic>? authorsNames;
 
   Book.named(
-      {this.bookId,
-      this.subCategoryId,
+      {required this.bookId,
+      this.subCategoryName,
       this.title,
       this.availableQuantity,
       this.publishedYear,
       this.authorsNames});
 
   Book.withoutId(
-      {this.subCategoryId,
+      {this.subCategoryName,
       this.title,
       this.availableQuantity,
       this.publishedYear});
@@ -25,11 +25,11 @@ class Book {
   Book.empty();
 
   Book.fromMap(dynamic map) {
+    bookId = map['bookId'];
     title = map['title'];
-    bookId = map['id'];
     availableQuantity = map['availableQuantity'];
     publishedYear = map['publishedYear'];
-    subCategoryId = map['subCategoryId'];
+    subCategoryName = map['subCategoryName'];
     authorsNames = map['authorsNames'];
   }
 
@@ -43,13 +43,14 @@ class Book {
   }
 
   static Book getBookFromJson(String body) {
-    Map<String, dynamic> studentMap = jsonDecode(body);
+    Map<String, dynamic> bookMap = jsonDecode(body);
     Book book = Book.named(
-      title: studentMap['title'],
-      availableQuantity: studentMap['availableQuantity'],
-      publishedYear: studentMap['publishedYear'],
-      subCategoryId: studentMap['subCategoryId'],
-      bookId: studentMap['bookId'],
+      bookId: bookMap['bookId'],
+      title: bookMap['title'],
+      authorsNames: bookMap['authorsNames'],
+      availableQuantity: bookMap['availableQuantity'],
+      publishedYear: bookMap['publishedYear'],
+      subCategoryName: bookMap['subCategoryName'],
     );
     return book;
   }

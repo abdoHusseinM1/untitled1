@@ -57,7 +57,7 @@ class SubCategoryAPI {
   }
 
   static Future<http.Response> getAllSubCategories() async {
-    String url = '${getBaseUrl()}${getSubCategoryUrl()}';
+    String url = '${getBaseUrl()}api/SubCategory/get-sub-categories-for-liberian';
     return await http.get(
       Uri.parse(url),
       headers: getHeaders(),

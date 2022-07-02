@@ -3,8 +3,9 @@ import 'package:untitled/models/author.dart';
 import 'package:untitled/shared/components/constants.dart';
 
 class AuthorAPI {
+
   // add Author
-  static Future<http.Response> addAuthor(Author author) async {
+  static Future<http.Response> addAuthor(PostAuthor author) async {
     String url = '${getBaseUrl()}${getAuthorUrl()}';
 
     return await http.post(
@@ -18,7 +19,7 @@ class AuthorAPI {
   static Future<http.Response> editAuthor(
       {required int? id, required String? name}) async {
     String url = '${getBaseUrl()}${getAuthorUrl()}';
-    Author author = Author.named(authorName: name, id: id);
+    PostAuthor author = PostAuthor.named(authorName: name, authorId: id);
 
     return await http.put(
       Uri.parse(url),

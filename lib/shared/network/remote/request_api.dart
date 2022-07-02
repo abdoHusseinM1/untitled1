@@ -42,8 +42,8 @@ class RequestAPI {
   }
 
   //return book
-  static Future<http.Response> returnBook({required int? requestId}) async {
-    String url = '${_requestUrl}return-book/$requestId';
+  static Future<http.Response> returnBook({required int id}) async {
+    String url = '${getBaseUrl()}api/Request/return-book/$id';
     return await http.put(Uri.parse(url), headers: getHeaders());
   }
 
@@ -52,6 +52,13 @@ class RequestAPI {
     String url = '${_requestUrl}cancel-request/$requestId';
     return await http.put(Uri.parse(url), headers: getHeaders());
   }
+
+  //open request
+  static Future<http.Response> openRequest({required int id}) async {
+    String url = '${getBaseUrl()}api/Request/open-request/$id';
+    return await http.put(Uri.parse(url), headers: getHeaders());
+  }
+
 
   //refresh status
   static Future<http.Response> refreshStatus() async {

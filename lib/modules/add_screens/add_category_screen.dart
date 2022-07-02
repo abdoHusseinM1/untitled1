@@ -27,26 +27,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Category name :',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.01,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: TextField(
-                        controller: textFieldController,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  child: getEditRow(
+                text: 'Category Name : ',
+                controller: textFieldController,
+                validateText: 'Invalid Name',
+              )),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
               ),
@@ -71,7 +56,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     text: 'Save',
                     disabled: buttonDisabled,
                     color: Colors.blue,
-                    onPressed: _addCategory,
+                    onPressed: () {
+                      _addCategory();
+                    },
                   ),
                 ],
               )
@@ -80,12 +67,16 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     );
   }
 
-  void _addCategory(){
-    if(textFieldController.text.isNotEmpty){
+  void _addCategory() {
+    if (textFieldController.text.isNotEmpty) {
       setState(() {
         buttonDisabled = true;
-        Category category = Category.named(categoryName: textFieldController.text);
-        CategoryAPI.addCategory(category).then((value){
+        PostCategory category =
+            PostCategory.named(categoryName: textFieldController.text);
+        CategoryAPI.addCategory(category).then((value) {
+          print(value.body);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(value.body)));
           Navigator.pop(context);
         });
       });

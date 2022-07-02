@@ -6,7 +6,7 @@ import 'package:untitled/shared/components/constants.dart';
 
 class CategoryAPI {
   //add category
-  static Future<http.Response> addCategory(Category category) async {
+  static Future<http.Response> addCategory(PostCategory category) async {
     return await http.post(
       Uri.parse('${getBaseUrl()}${getCategoryUrl()}'),
       headers: getHeaders(),

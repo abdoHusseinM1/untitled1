@@ -1,28 +1,39 @@
 import 'dart:convert';
 
 class Request{
-  int? id;
+  int? requestId;
   DateTime? requestDate;
   String? status;
+  String ? bookTitle;
   int? studentId;
   int? bookId;
+  String? studentName;
+  String? bookCategoryName;
+  String? bookSubCategoryName;
 
   Request.named({
-    this.id = 0,
+    this.requestId = 0,
     this.requestDate,
     this.bookId,
     this.status,
     this.studentId,
+    this.studentName,
+    this.bookSubCategoryName,
+    this.bookTitle,
+    this.bookCategoryName,
 });
 
   Request.empty();
 
   Request.fromMap(dynamic map){
-    id = map['id'];
+    requestId = map['requestId'];
+    bookTitle = map['bookTitle'];
     studentId = map['studentId'];
     bookId = map['bookId'];
     requestDate = DateTime.parse(map['requestDate']);
     status = map['status'];
+    studentName = map['studentName'];
+    bookTitle = map['bookTitle'];
   }
 
   static List<Request> getAllRequestsFromJson(String body) {
@@ -37,20 +48,24 @@ class Request{
 
   Request.fromJson(String body) {
     Map<String, dynamic> requestMap = jsonDecode(body);
-    id = requestMap['id'];
+    requestId = requestMap['requestId'];
     studentId= requestMap['studentId'];
+    bookTitle= requestMap['bookTitle'];
     bookId = requestMap['bookId'];
     status = requestMap['status'];
     requestDate = requestMap['requestDate'];
+    studentName = requestMap['studentName'];
   }
 
   String toJsonBody(){
     return jsonEncode(<String, dynamic>{
-      'id':id,
+      'requestId':requestId,
       'status':status,
+      'bookTitle':bookTitle,
       'requestDate':requestDate!.toIso8601String(),
       'studentId' :studentId,
       'bookId' :bookId,
+      'studentName' :studentName,
     });
   }
 }

@@ -39,16 +39,7 @@ class StudentAPI {
     );
   }
 
-  //TODO edit from the API project make the post => put
-  static Future<http.Response> editStudent(Student newStudent) async {
-    return await http.put(
-      Uri.parse('${getBaseUrl()}${getStudentUrl()}'),
-      headers: getHeaders(),
-      body: newStudent.toMap(),
-    );
-  }
-
-  //Delete Student
+  /*//Delete Student
   static Future<http.Response> deleteStudent(int id) async {
     String url = '${getBaseUrl()}${getStudentUrl()}$id';
 
@@ -56,11 +47,21 @@ class StudentAPI {
       Uri.parse(url),
       headers: getHeaders(),
     );
-  }
+  }*/
 
   //block student
-  static Future<http.Response> blockStudent(int id) async {
-    String url = '${getBaseUrl()}${getBlockStudentUrl()}$id';
+  static Future<http.Response> blockStudent(int? id) async {
+    String url = '${getBaseUrl()}api/Student/block-student/$id';
+
+    return await http.put(
+      Uri.parse(url),
+      headers: getHeaders(),
+    );
+  }
+
+  //un block student
+  static Future<http.Response> unBlockStudent(int? id) async {
+    String url = '${getBaseUrl()}api/Student/unblock-student/$id';
 
     return await http.put(
       Uri.parse(url),
@@ -70,7 +71,7 @@ class StudentAPI {
 
   //accept student
   static Future<http.Response> acceptStudent(int? id) async {
-    String url = '${getStudentUrl()}${getAcceptStudentUrl()}$id';
+    String url = '${getBaseUrl()}api/Student/accept-student/$id';
 
     return await http.put(
       Uri.parse(url),

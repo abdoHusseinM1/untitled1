@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Student {
-  int? id;
+  int? studentId;
   String? fullName;
   String? email;
   String? password;
@@ -12,7 +12,7 @@ class Student {
   bool? isAccepted;
 
   Student.withId({
-    required this.id,
+    required this.studentId,
     this.email,
     this.password,
     this.address,
@@ -42,7 +42,7 @@ class Student {
     Student s = Student.withId(email: studentMap['email'],
       password: studentMap['password'],
       address: studentMap['address'],
-      id: studentMap['id'],
+      studentId: studentMap['studentId'],
       nationalId: studentMap['nationalId'],
       phone: studentMap['phone'],
       fullName: studentMap['fullName'],
@@ -55,7 +55,7 @@ class Student {
 
   Student.fromMap(dynamic map){
     fullName = map['fullName'];
-    id = map['id'];
+    studentId = map['studentId'];
     nationalId = map['nationalId'];
     address = map['address'];
     phone = map['phone'];
@@ -76,7 +76,7 @@ class Student {
 
   dynamic toMap() {
     return jsonEncode(<String, dynamic>{
-      'id':id,
+      'studentId':studentId,
       'fullName': fullName,
       'address': address,
       'nationalId': nationalId,

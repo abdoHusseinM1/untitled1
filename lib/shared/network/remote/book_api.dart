@@ -31,9 +31,16 @@ class BookAPI{
 
   //add book
   static Future<http.Response> addBook(PostBook b) async {
-
     return await http.post(
       Uri.parse('${getBaseUrl()}${getBookUrl()}'),
+      headers: getHeaders(),
+      body: jsonEncode(b.toJson()),
+    );
+  }
+  //edit book
+  static Future<http.Response> editBook(PostBook b) async {
+    return await http.put(
+      Uri.parse('${getBaseUrl()}api/Book/edit-book'),
       headers: getHeaders(),
       body: jsonEncode(b.toJson()),
     );
@@ -68,5 +75,14 @@ class BookAPI{
     );
   }
 
+
+  static Future<http.Response> getDashboardData(){
+    String url = '${getBaseUrl()}api/Book/get-dashboard-numbers';
+
+    return http.get(
+      Uri.parse(url),
+      headers: getHeaders(),
+    );
+  }
 
 }

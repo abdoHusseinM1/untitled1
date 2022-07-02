@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled/models/login_officer.dart';
 import 'package:untitled/models/officer.dart';
 import 'package:untitled/modules/home_screen/home_screen.dart';
+import 'package:untitled/modules/lists_screens/request_list.dart';
 import 'package:untitled/shared/components/components.dart';
 import 'package:untitled/shared/instances/current_user_info.dart';
 import 'package:untitled/shared/network/remote/officer_api.dart';
@@ -133,8 +134,15 @@ class _SignInScreenState extends State<SignInScreen> {
       await OfficerAPI.loginOfficer(officer).then((value) {
         if (value.statusCode == 200) {
           currentOfficer = Officer.getAuthorFromJson(value.body);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+          if(currentOfficer!.isAdmin!){
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
+
+            }else {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const RequestsListScreen()));
+          }
+
         }else {
           SnackBar snackBar = SnackBar(content: Text(value.body));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
