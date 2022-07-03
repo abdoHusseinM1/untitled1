@@ -26,11 +26,11 @@ class Officer{
   Officer.empty();
 
   Officer.fromMap(dynamic map){
-    id = map['id'];
+    id = map['officerId'];
     fullName = map['fullName'];
     address = map['address'];
     isBlocked = map['isBlocked'];
-    isAccepted = map['accepted'];
+    isAccepted = map['isAccepted'];
     isAdmin = map['isAdmin'];
     email = map['email'];
     password = map['password'];
@@ -49,7 +49,7 @@ class Officer{
 
   Officer.getAuthorFromJson(String body) {
     Map<String, dynamic> officerMap = jsonDecode(body);
-    id = officerMap['id'];
+    id = officerMap['officerId'];
     fullName = officerMap['fullName'];
     password = officerMap['password'];
     isBlocked = officerMap['isBlocked'];
@@ -57,12 +57,12 @@ class Officer{
     nationalId =  officerMap['nationalId'];
     address =   officerMap['address'];
     isAdmin = officerMap['isAdmin'];
-    isAccepted = officerMap['accepted'];
+    isAccepted = officerMap['isAccepted'];
   }
 
   String toJsonBody(){
     return jsonEncode(<String, dynamic>{
-      'id':id,
+      'officerId':id,
       'address': address,
       'isBlocked' : isBlocked,
       'email' : email,

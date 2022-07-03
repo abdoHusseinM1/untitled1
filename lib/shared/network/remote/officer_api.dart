@@ -59,6 +59,13 @@ class OfficerAPI {
     return await http.put(Uri.parse(url), headers: getHeaders());
   }
 
+  //make liberian
+  static Future<http.Response> makeLiberian(int? id) async {
+    String url = '${getBaseUrl()}api/Officer/make-liberian/$id';
+
+    return await http.put(Uri.parse(url), headers: getHeaders());
+  }
+
   //delete
   static Future<http.Response> deleteOfficer(int? id) async {
     String url = '${getBaseUrl()}${getOfficerUrl()}$id';

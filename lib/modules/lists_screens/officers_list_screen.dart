@@ -62,8 +62,8 @@ class _OfficersScreenState extends State<OfficersScreen> {
       required OfficersListNotifier notifier,
       required int index}) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
+      onTap: ()async {
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => OfficerDetails(officer: officer),

@@ -12,6 +12,7 @@ import 'package:untitled/notifiers/requests_list_notifier.dart';
 import 'package:untitled/notifiers/students_list_notifier.dart';
 import 'package:untitled/shared/network/remote/request_api.dart';
 import 'notifiers/authors_list_notifier.dart';
+import 'notifiers/officer_details_notfier.dart';
 import 'notifiers/officers_notifier.dart';
 import 'notifiers/registration_requests_notifier.dart';
 import 'notifiers/request_details_notifier.dart';
@@ -42,6 +43,7 @@ void main() async {
       ChangeNotifierProvider<SubCategoriesNotifier>(create: (_)=>SubCategoriesNotifier()),
       ChangeNotifierProvider<DashboardNotifier>(create: (_)=>DashboardNotifier()),
       ChangeNotifierProvider<OfficersListNotifier>(create: (_)=>OfficersListNotifier()),
+      ChangeNotifierProvider<OfficerDetailsNotifier>(create: (_)=>OfficerDetailsNotifier()),
     ],
       child: const MyApp(),
     ),

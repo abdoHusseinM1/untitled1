@@ -24,4 +24,10 @@ class BooksListNotifier extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+   deleteBook(id)async {
+    BookAPI.deleteBook(id).then((value){
+      getBooks();
+    });
+   }
 }
